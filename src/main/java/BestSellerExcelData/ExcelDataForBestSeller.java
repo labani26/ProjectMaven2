@@ -1,64 +1,84 @@
 package BestSellerExcelData;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelDataForBestSeller {
 
+    private XSSFWorkbook workbook;
+    private XSSFSheet sheet;
+    private String path;
+
+    public ExcelDataForBestSeller() throws IOException {
+    //	ExcelDataForBestSeller - A class is a blueprint.
+//    	Class = Design
+//    	Object = Real thing
+//    	IOException - Occurs when: File not found, File locked, Permission issue
+//  	throws IOException - If any file-related error occurs, Java will handle it.
+
+        path = "C:\\Users\\Labani sardar\\Downloads\\Automation_testin_material\\Best Seller Item List for -EastCom QuickSelling.xlsx";
+
+//        Open the Excel file for reading.
+        FileInputStream file = new FileInputStream(path);     
+//        FileInputStream - Used for reading files.
+//      
+        workbook = new XSSFWorkbook(file);
+//       XSSFSheet - Represents a sheet inside Excel.
+//        Loads the Excel workbook into memory.
+
+        sheet = workbook.getSheet("Best Seller Item List for -EastCom QuickSelling");
+
+        file.close();
+    }
+
+    // Read Data
+    public String readData(int row, int column) {
+
+        return sheet.getRow(row)
+                    .getCell(column)
+                    .getStringCellValue();
+    }
+
+    // Write Data
+    public void writeData(int row, int column, String value) throws IOException {
+    	
+    	//int row, int column, String value -	Parameters are variables that receive values when the method is called.
+//    	int = integer data type
+//    			row = variable name
+//    			Stores the row number
+//    	int = integer data type
+//    			column = variable name
+//    			Stores the column number
+//    	String = text data type
+//    			value = variable name
+//    			Stores the text to be written into the Excel cell
+    	
+        sheet.getRow(row)
+             .createCell(column)
+             .setCellValue(value);
+
+        FileOutputStream file = new FileOutputStream(path);
+       // FileOutputStream - Used for writing data into files. ex - FileOutputStream file = new FileOutputStream(path);
+
+
+        workbook.write(file);
+
+        file.close();
+    }
+
     public static void main(String[] args) throws IOException {
 
-        // File Path
-        String path = "C:\\Users\\Labani sardar\\Downloads\\Automation_testin_material\\Best Seller Item List for -EastCom QuickSelling.xlsx";
+        ExcelDataForBestSeller excel = new ExcelDataForBestSeller();
 
-        // File Input Stream
-        FileInputStream file = new FileInputStream(path);
+        // Read Data
+        String data = excel.readData(1, 0);
+        System.out.println(data);
 
-        // Workbook
-        XSSFWorkbook workbook = new XSSFWorkbook(file);
-
-        // Sheet
-        XSSFSheet sheet = workbook.getSheet("Best Seller Item List for -EastCom QuickSelling");
-
-        // Last Row Number
-        int rowCount = sheet.getLastRowNum();
-
-        System.out.println("Last Row Number: " + rowCount);
-
-        // Loop through rows
-//        for (int i = 1; i <= rowCount; i++) {
-//
-//            Row row = sheet.getRow(i);
-//
-//            if (row != null) {
-//
-//                // Get first cell value from row
-//                Cell cell = row.getCell(0);
-//
-//                String rowName = cell.toString();
-//
-//                // Get total column count
-//                int columnCount = row.getLastCellNum();
-//
-//                System.out.println(
-//                        "Row Index: " + i +
-//                        " | Row Name: " + rowName +
-//                        " | Column Count: " + columnCount);
-        
-        public String readData(int row, int column) {
-        	
-        	return sheet.getSheet("Best Seller Item List for -EastCom QuickSelling").getRow(row).getcell(column).getStringCellValue();
-            }
-        
-        public void writeData(int row, int clm)
-        }
-
-        // Close resources
-        workbook.close();
-        file.close();
+        // Write Data
+        excel.writeData(1, 5, "Automation Testing");
     }
 }
