@@ -10,7 +10,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class ExcelDataForBestSeller {
 
     private XSSFWorkbook workbook;
-    private XSSFSheet sheet;
+    public XSSFSheet sheet;
     private String path;
 
     public ExcelDataForBestSeller() throws IOException {
